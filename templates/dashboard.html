@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consulados de Barcelona</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Guía consular · Barcelona</p>
+      <h1>Consulados en Barcelona</h1>
+      <p class="hero-copy">Encuentra consulados, consulta sus direcciones y explora cómo se distribuyen por distrito.</p>
+      <a class="button button-light" href="{{ url_for('graph') }}">Ver gráfico por distrito <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="hero-mark" aria-hidden="true">BCN</div>
+  </header>
+
+  <main class="page-shell">
+    <section class="directory panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">Directorio</p><h2>Consulados registrados</h2></div>
+      </div>
+      <form class="filters" method="get" action="{{ url_for('dashboard') }}">
+        <label class="select-field"><span class="sr-only">Filtrar por país</span><select name="country" onchange="this.form.submit()"><option value="">Todos los países</option>{% for item in countries %}<option value="{{ item }}" {% if selected_country == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+        <label class="select-field"><span class="sr-only">Filtrar por distrito</span><select name="district" onchange="this.form.submit()"><option value="">Todos los distritos</option>{% for item in districts %}<option value="{{ item }}" {% if selected_district == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+        {% if selected_country or selected_district %}<a class="clear-link" href="{{ url_for('dashboard') }}">Ver todos</a>{% endif %}
+      </form>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>País</th><th>Dirección</th><th>Distrito</th><th>Número de teléfono</th></tr></thead>
+          <tbody>
+          {% for place in consulates %}
+            <tr>
+              <td class="id-cell">{{ place.id }}</td>
+              <td>{{ place.country or '—' }}</td>
+              <td>{{ place.address }}{% if place.postal_code %}<small>{{ place.postal_code }}</small>{% endif %}</td>
+              <td>{{ place.district }}</td>
+              <td>{{ place.phone or '—' }}</td>
+            </tr>
+          {% else %}
+            <tr><td class="empty-state" colspan="5">No hay consulados que coincidan con los filtros seleccionados.</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <footer>Datos abiertos de Barcelona <span>·</span> Directorio de consulados</footer>
+  </main>
+</body>
+</html>

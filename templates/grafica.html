@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consulados por distrito · Barcelona</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Explora los datos · Barcelona</p>
+      <h1>Consulados por distrito</h1>
+      <p class="hero-copy">Una vista rápida de cómo se distribuyen los {{ total }} consulados del registro.</p>
+      <a class="button button-light" href="{{ url_for('dashboard') }}">← Volver al directorio</a>
+    </div>
+    <div class="hero-mark" aria-hidden="true">BCN</div>
+  </header>
+  <main class="page-shell chart-shell">
+    <section class="panel chart-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">Distribución territorial</p><h2>Consulados por distrito</h2></div>
+        <span class="result-count">{{ district_count }} distritos</span>
+      </div>
+      <div class="matplotlib-chart-wrap">
+        <img class="matplotlib-chart" src="data:image/png;base64,{{ chart_image }}" alt="Gráfica de barras del número de consulados en cada distrito de Barcelona">
+      </div>
+      <p class="chart-note">Cada barra representa un distrito; su longitud indica cuántos consulados hay registrados en él.</p>
+    </section>
+  </main>
+</body>
+</html>
